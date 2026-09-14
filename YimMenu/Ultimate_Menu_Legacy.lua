@@ -4528,13 +4528,7 @@ function YimConfig(DEFAULT_CONFIG)
     }
 
     function file_exists(name)
-        local f = io.open(name, "r")
-        if f ~= nil then
-            f:close()
-            return true
-        else
-            return false
-        end
+        return io.exists(name)
     end
 
     local writeToFile = function(data)
@@ -4575,7 +4569,7 @@ function YimConfig(DEFAULT_CONFIG)
         else
             config = readFromFile()
             if config == nil then
-                error("[FATAL] Failed to read config file!")
+                return nil
             end
 
             for key, defaultValue in pairs(DEFAULT_CONFIG) do
@@ -4589,7 +4583,7 @@ function YimConfig(DEFAULT_CONFIG)
 
     local readAndDecodeConfig = function()
         if not checkAndCreateConfig() then
-            error("Failed to read config file!", 2)
+            return nil
         end
         return readFromFile()
     end
